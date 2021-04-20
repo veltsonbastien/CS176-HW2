@@ -80,17 +80,18 @@ int main(int argc, char *argv[])
      if (bind(sockfd, (struct sockaddr *) &serv_addr,
               sizeof(serv_addr)) < 0) 
               error("ERROR on binding");
-     listen(sockfd,5);
+     listen(sockfd,5); 
      clilen = sizeof(cli_addr);
+     while(1){
      newsockfd = accept(sockfd, 
                  (struct sockaddr *) &cli_addr, 
                  &clilen);
      if (newsockfd < 0) 
           error("ERROR on accept");
      bzero(buffer,256);
-     n = read(newsockfd,buffer,255);
+     n = read(newsockfd,buffer,255); 
      if (n < 0) error("ERROR reading from socket");
-     //printf("Here is the message:%s",buffer);
+     //printf("Here is the message:%s",buffer); 
      //get the sum
      buffer[strlen(buffer)-1] = '\0';
      char* returnMessage = sumOfDigits(buffer); 
@@ -103,13 +104,16 @@ int main(int argc, char *argv[])
          lengthOfMessage = strlen(returnMessage);
 	 delay(1000);
 	 n = write(newsockfd, returnMessage, lengthOfMessage); 
-	 // n = write(newsockfd, "Just curious \n", 15); 
 	}
      } else {
-       n = write(newsockfd,"Sorry, cannot compute",21);
+       n = write(newsockfd,"Sorry, cannot compute!",21);
      }
      if (n < 0) error("ERROR writing to socket");
-     close(newsockfd);
+     
+      //close connection: 
+      close(newsockfd);
+     }
+     //close(newsockfd);
      //close(sockfd);
      return 0; 
  }

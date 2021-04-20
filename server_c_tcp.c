@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 	 n = write(newsockfd, returnMessage, lengthOfMessage); 
 	}
      } else {
-       n = write(newsockfd,"Sorry, cannot compute!",21);
+       n = write(newsockfd,"Sorry, cannot compute!",22);
      }
      if (n < 0) error("ERROR writing to socket");
      

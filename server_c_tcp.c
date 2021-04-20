@@ -46,10 +46,16 @@ char* sumOfDigits(char *bufferCopy){
     }
     //converting int to char, with answer from: 
     //https://stackoverflow.com/questions/8257714/how-to-convert-an-int-to-string-in-c
+    if(strlen(bufferCopy) > 0){
     int strLength = snprintf(NULL, 0, "%d", total); 
     char* result = malloc(strLength+1); 
     snprintf(result, strLength+1, "%d", total); 
     return result; 
+    }
+    char* result = malloc(2);
+    result[0] = 'a';
+    result[1] = '\0';
+    return result;
 }
 
 int main(int argc, char *argv[])

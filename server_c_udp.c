@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <ctype.h>
 
 // udp skeleton implementation referenced from https://gist.github.com/karupanerura/00c8ff6a48d98dd6bec2
 
@@ -130,6 +131,16 @@ int addDigits(char *num)
     return sum;
 }
 
+int hasLetter(char* string){
+    for(int i = 0; i < strlen(string); i++){
+        if (isalpha(string[i]) ){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
 int main(int argc, char *argv[])
 {
     //read port input
@@ -150,23 +161,28 @@ int main(int argc, char *argv[])
         int offset = 0;
         int length = 0;
         char buf[4096];
+        char error[22] = "E";
 
         //while message contains something
         while ((length = recv_by_udp(&sock, buf, 128, offset)) > 0)
         {
-            //calculate sum
-            int sum = 0;
-            for (int count = 0; count < strlen(buf); count++)
-            {
-                char c = buf[count];
-                int digit = atoi(&c);
-                sum += digit;
+            if(hasLetter(buf)){
+
+                send_by_udp(&sock, error, length, 0);
+
+            }else{
+                int sum = 0;
+                for (int count = 0; count < strlen(buf); count++)
+                {
+                    char c = buf[count];
+                    int digit = atoi(&c);
+                    sum += digit;
+                }
+
+                char *arr = convertIntegerToChar(sum);
+
+                send_by_udp(&sock, arr, length, 0);
             }
-
-            char *arr = convertIntegerToChar(sum);
-
-            //send value and clear buffer for new value
-            send_by_udp(&sock, arr, length, 0);
             memset(buf, 0, 4096);
             offset += length;
         }

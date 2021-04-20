@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <ctype.h>
 
 // udp skeleton implementation referenced from https://gist.github.com/karupanerura/00c8ff6a48d98dd6bec2
 
@@ -58,6 +59,15 @@ int recv_by_udp(const struct udp_socket sock, char *buf, size_t length, size_t o
     return recvfrom(sock.fd, buf, length, offset, (struct sockaddr *)&sock.addr, &addrlen);
 }
 
+int hasLetter(char* string){
+    for(int i = 0; i < strlen(string); i++){
+        if (isalpha(string[i]) ){
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {   
 
@@ -84,7 +94,13 @@ int main(int argc, char *argv[])
 
         send_by_udp(sock, buf, strlen(buf), 0);
         while ((length = recv_by_udp(sock, buf, 4096, 0)) < 0);
-        printf("From server: %.*s\n", length, buf);
+
+        if (hasLetter(buf)){
+            printf("From server: Sorry, cannot compute!\n");
+        }else{
+            printf("From server: %.*s\n", length, buf);
+        }
+        
 
     }
     //close socket

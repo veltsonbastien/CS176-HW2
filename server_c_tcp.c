@@ -97,12 +97,12 @@ int main(int argc, char *argv[])
      char* returnMessage = sumOfDigits(buffer); 
      if(returnMessage[0] != 'a'){
         int lengthOfMessage = strlen(returnMessage);   
-	delay(1000);
+	delay(2000);
 	n = write(newsockfd, returnMessage, lengthOfMessage);
 	while(lengthOfMessage > 1){		
 	 returnMessage = sumOfDigits(returnMessage);
          lengthOfMessage = strlen(returnMessage);
-	 delay(1000);
+	 delay(2000);
 	 n = write(newsockfd, returnMessage, lengthOfMessage); 
 	}
      } else {
